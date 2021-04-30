@@ -1,5 +1,6 @@
-# Wifi SCAN Example
+# AnyWave smart device heath
 
-This example shows how to scan for available set of APs.
+This project will control piezo and pwm
 
-* The SCAN_LIST_SIZE parameter needs to be set from the example configuration menu. It represents maximum number of scan list entries that driver can populate.
+* Can control via BLE using ESP32-IDF, and mqtt
+* Display using ssd1309 SPI oled 128*64
