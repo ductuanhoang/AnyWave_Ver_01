@@ -1,4 +1,4 @@
-# AnyWave smart device heath
+# AnyWave smart health equipment
 
 This project will control piezo and pwm
 
