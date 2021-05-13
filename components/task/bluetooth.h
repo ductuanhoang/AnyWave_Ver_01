@@ -27,5 +27,5 @@
 /***         Exported global functions                                     ***/
 /****************************************************************************/
 void ble_create_task(void);
-
+void ble_disable(void);
 #endif /* MAIN_TASK_BLUETOOTH_H_ */

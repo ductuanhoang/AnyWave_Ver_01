@@ -16,6 +16,7 @@
 #include "../../Common.h"
 #include "wifi_task.h"
 #include "ota_task.h"
+#include "bluetooth.h"
 /***********************************************************************************************************************
 * Macro definitions
 ***********************************************************************************************************************/
@@ -64,6 +65,8 @@ static void PlantControl_Task(void *pvParameters)
 		if (device_data.ota_status == E_OTA_START)
 		{
 			device_data.ota_status = E_OTA_RUNNING;
+			APP_LOGD("disable ble");
+			ble_disable();
 			ota_task();
 		}
 		else if (device_data.ota_status == E_OTA_DONE)

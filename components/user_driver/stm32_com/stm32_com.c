@@ -94,7 +94,6 @@ static void anywave_com_process_task(void *pvParameters)
 			count_message = 0;
 			have_message_comming = false;
 		}
-		APP_LOGD("Connection error 2");
 		vTaskDelay(1000 / portTICK_PERIOD_MS);
 	}
 }

@@ -17,7 +17,7 @@
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-
+#include "../logger_file/logger_file.h"
 // #include "../Interface/Logger_File/logger_file.h"
 /***********************************************************************************************************************
 * Macro definitions
@@ -187,7 +187,7 @@ static bool json_parser_command_smart_config(const char *message)
 		sprintf(wifi_info.wifi_name, "%s", type_wifi_name);
 		sprintf(wifi_info.wifi_pass, "%s", type_wifi_password);
 
-		// logger_LoadInfo_WifiStation(true);
+		logger_LoadInfo_WifiStation(true);
 		status = true;
 	}
 	else

@@ -720,3 +720,10 @@ void ble_create_task(void)
 {
 	ble_task(NULL);
 }
+
+
+void ble_disable(void)
+{
+    esp_bluedroid_disable();
+    esp_bluedroid_init();
+}

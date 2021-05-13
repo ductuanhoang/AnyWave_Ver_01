@@ -83,8 +83,8 @@ static void simple_ota_example_task(void *pvParameter);
 /***********************************************************************************************************************
 * Imported global variables and functions (from other files)
 ***********************************************************************************************************************/
-char rcv_buffer[200];
-
+static char rcv_buffer[500];
+static int length_buffer = 0;
 esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
     switch (evt->event_id)
@@ -104,6 +104,7 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
     case HTTP_EVENT_ON_DATA:
         ESP_LOGD(TAG, "HTTP_EVENT_ON_DATA, len=%d", evt->data_len);
         strncpy(rcv_buffer, (char *)evt->data, evt->data_len);
+        length_buffer = evt->data_len;
         break;
     case HTTP_EVENT_ON_FINISH:
         ESP_LOGD(TAG, "HTTP_EVENT_ON_FINISH");
@@ -122,7 +123,7 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 ***********************************************************************************************************************/
 void ota_task(void)
 {
-    xTaskCreate(&simple_ota_example_task, "ota_example_task", 8192, NULL, 5, NULL);
+    xTaskCreatePinnedToCore(simple_ota_example_task, "ota_example_task", 8192, NULL, 5 | portPRIVILEGE_BIT, NULL, 1);
 }
 
 /***********************************************************************************************************************
@@ -143,7 +144,7 @@ static void simple_ota_example_task(void *pvParameter)
     esp_err_t err = esp_http_client_perform(client);
     if (err == ESP_OK)
     {
-        cJSON *json = cJSON_Parse(rcv_buffer);
+        cJSON *json = cJSON_ParseWithLength(rcv_buffer, length_buffer);
         printf("rcv_buffer = %s\n", rcv_buffer);
         if (json == NULL)
         {
@@ -198,9 +199,13 @@ static void simple_ota_example_task(void *pvParameter)
                 }
             }
         }
+        length_buffer = 0;
+        memset(rcv_buffer, 0x00, sizeof(rcv_buffer));
     }
     else
     {
+        length_buffer = 0;
+        memset(rcv_buffer, 0x00, sizeof(rcv_buffer));
         device_data.ota_status = E_OTA_FAIL;
         printf("unable download file , aborting update firmware.... \n");
     }

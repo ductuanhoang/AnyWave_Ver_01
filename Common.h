@@ -32,7 +32,7 @@
 
 #include "main.h"
 
-#define FIRMWARE_VERSION 1.2
+#define FIRMWARE_VERSION 1.4
 
 enum
 {
